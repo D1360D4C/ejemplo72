@@ -7,7 +7,10 @@
 </head>
 <body>
 
-<?php include_once 'cn.php';
+<?php 
+session_start();
+
+include_once 'cn.php';
 
 elegir($conexdb);
 function elegir($conexdb){
@@ -21,6 +24,18 @@ function sesionar($conexdb){
     $pass = $_POST['pass'];
     $consulta= mysqli_query($conexdb, "SELECT nick FROM usuarios WHERE email='$email' AND contra= '$pass'");
 
+    if(mysqli_num_rows($consulta) > 0) {
+        $_SESSION['nick'] = $email;
+        header ("location: inicio.php");
+        exit();
+    }else{
+        echo '
+            <script>
+            alert("Usuario no encontrado, introduzca datos verificados");
+            window.location = "index.html";
+            </script>';
+            exit();
+    }
 
 }
 
